@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv='Content-type' content='text/html; charset=utf-8'>
+    <title>Basic Example with JSX</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div id="container"></div>
+
+    <script src="shared/thirdparty/es5-shim.min.js"></script>
+    <script src="shared/thirdparty/es5-sham.min.js"></script>
+    <script src="shared/thirdparty/console-polyfill.js"></script>
+    <script src="build/react.js"></script>
+    <script src="build/JSXTransformer.js"></script>
+    <script type="text/jsx">
+
+      var Paragraph = React.createClass({
+        render: function(){
+          var styles = {
+            color: this.props.color, // React.js
+            fontSize: 36, // Number
+            fontFamily: "Roboto, sans-serif", // String
+          };
+          return <p style={styles}>Hello Open Source Open Mic</p>;
+        }
+      });
+
+      var Example = React.createClass({
+        getInitialState: function(){
+          return {
+            color: "red",
+            techno: false
+          }
+        },
+        genColor: function(){
+          var r = Math.round(Math.random()*16).toString(16);
+          var g = Math.round(Math.random()*16).toString(16);
+          var b = Math.round(Math.random()*16).toString(16);
+          return "#"+r+g+b;
+        },
+        changeColor: function(e){
+          this.setState({
+            color: this.genColor()
+          });
+        },
+        technoMode: function(){
+          if (this.state.techno){
+            clearInterval(this.state.techno);
+            this.setState({techno: false});
+          } else {
+            this.setState({techno: setInterval(this.changeColor, 100)});
+          }
+        },
+        render: function() {
+          return (<div>
+            <Paragraph color={this.state.color}/>
+            <button onClick={this.changeColor}>Change Color</button>
+            <button onClick={this.technoMode}>Techno Mode</button>
+          </div>);
+        }
+      });
+
+      React.render(
+        <Example />,
+        document.getElementById('container')
+      );
+    </script>
+  </body>
+</html>
